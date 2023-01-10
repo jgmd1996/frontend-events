@@ -13,12 +13,12 @@ function Home() {
             </tr>
 
             <tr>
-              <td><Link to="/criarCategoria">Criar nova categoria</Link></td>
+              <td><Link to="/createGenre">Criar Genero</Link></td>
               <td><Link to="/criarProduto">Criar novo produto</Link></td>
             </tr>
 
             <tr>
-              <td><Link to="/listaCategoria">Lista categoria</Link></td>
+              <td><Link to="/genreList">Lista Genero</Link></td>
               <td><Link to="/ListaProduto">Lista produto</Link></td>
             </tr>
 

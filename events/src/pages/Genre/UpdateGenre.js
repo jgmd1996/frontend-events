@@ -2,26 +2,26 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import * as Yup from "yup";
 
-function AtualizarCategoria() {
+function UpdateGenre() {
   
   const navigate = useNavigate();
   const {state} = useLocation();
 
   const RegisterSchema = Yup.object().shape({
-     nome: Yup.string()
+     name: Yup.string()
      .min(2, 'Muito curto!')
      .max(200, 'Muito grande!')
-     .required('Categoria obrigatório!')
+     .required('Género obrigatório!')
   });
 
   const formik = useFormik({
   initialValues: {
-    nome: state.item.nome
+    name: state.item.name
   },
   validationSchema: RegisterSchema,
 
   onSubmit: async (values) => {
-    const body = { nome: values.nome }
+    const body = { name: values.name }
     const settings = {
       method: 'put',
       headers: {
@@ -31,12 +31,11 @@ function AtualizarCategoria() {
       body: JSON.stringify(body)
     };
     try {
-      const fetchResponse = await fetch('http://localhost:3001/categories/' + state.item._id, settings);  
+      const fetchResponse = await fetch('http://localhost:3001/genre/' + state.item._id, settings);  
       console.log("fetchResponse",fetchResponse);
       if (fetchResponse.status === 200) {
-        formik.setFieldValue("nome", null);
-        navigate('/listaCategoria', { replace: true });
-        console.log("Chego aqui");
+        formik.setFieldValue("name", null);
+        navigate('/genreList', { replace: true });
       }
     } catch (e) {
       console.error(e);
@@ -54,19 +53,19 @@ function AtualizarCategoria() {
           <div>
             <input
               type="text"
-              id="nome"
-              name="nome"
-              placeholder="Digite a categoria"
-              {...getFieldProps('nome')}
+              id="name"
+              name="name"
+              placeholder="Digite a Género"
+              {...getFieldProps('name')}
             />
-            <div>{touched.nome && errors.nome}</div>
+            <div>{touched.name && errors.name}</div>
           </div>
-          <button type='submit'  >Criar categoria</button>
-          <Link to="/">home</Link>
+          <button type='submit'>Atualizar Género</button>
+          <Link to="/">Voltar para pagina inicial </Link>
         </Form>
       </FormikProvider>
     </>
   );
 }
 
-export default AtualizarCategoria;
+export default UpdateGenre;

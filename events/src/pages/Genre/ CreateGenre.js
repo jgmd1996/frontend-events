@@ -2,25 +2,25 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import * as Yup from "yup";
 
-function CriarCategoria() {
+function  CreateGenre() {
 
   const navigate = useNavigate();
 
   const RegisterSchema = Yup.object().shape({
-    nome: Yup.string()
+    name: Yup.string()
       .min(2, 'Muito curto!')
       .max(200, 'Muito grande!')
-      .required('Categoria obrigatório!')
+      .required('Género obrigatório!')
   })
 
-  const formik = useFormik({//
+  const formik = useFormik({
     initialValues: {
-      nome: ''
+      name: ''
     },
     validationSchema: RegisterSchema,
 
     onSubmit: async (values) => {
-      const body = { nome: values.nome }
+      const body = { name: values.name }
       const settings = {
         method: 'POST',
         headers: {
@@ -30,11 +30,11 @@ function CriarCategoria() {
         body: JSON.stringify(body)
       };
       try {
-        const fetchResponse = await fetch('http://localhost:3001/categories', settings);
+        const fetchResponse = await fetch('http://localhost:3001/genre', settings);
         console.log("fetchResponse", fetchResponse);
         if (fetchResponse.status === 201) {
-          formik.setFieldValue("nome", null);
-          navigate('/listaCategoria', { replace: true });
+          formik.setFieldValue("name", null);
+          navigate('/genreList', { replace: true });
         };
       } catch (e) {
         console.error(e);
@@ -52,21 +52,21 @@ function CriarCategoria() {
           <div>
             <input
               type="text"
-              id="nome"
-              name="nome"
-              placeholder="Digite a categoria"
-              {...getFieldProps('nome')}
+              id="name"
+              name="name"
+              placeholder="Digite o novo Género"
+              {...getFieldProps('name')}
             />
-            <div>{touched.nome && errors.nome}</div>
+            <div>{touched.name && errors.name}</div>
           </div>
 
-          <button type='submit'  >Criar categoria</button>
+          <button type='submit'>Criar Genero</button>
           
-          <Link to="/">home</Link>
+          <Link to="/">Voltar para pagina inicial</Link>
         </Form>
       </FormikProvider>
     </>
   );
 }
 
-export default CriarCategoria;
+export default  CreateGenre;
