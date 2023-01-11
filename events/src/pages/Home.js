@@ -14,7 +14,7 @@ function Home() {
 
             <tr>
               <td><Link to="/createGenre">Criar Genero</Link></td>
-              <td><Link to="/criarProduto">Criar novo produto</Link></td>
+              <td><Link to="/CreateEvent">Criar novo evento</Link></td>
             </tr>
 
             <tr>

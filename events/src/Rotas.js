@@ -5,8 +5,10 @@ import CreateGenre from './pages/Genre/ CreateGenre';
 import UpdateGenre from './pages/Genre/UpdateGenre';
 
 import Home from './pages/Home'
+
+import CreateEvent from './pages/produto/CreateEvent';
 import AtualizarProduto from './pages/produto/AtualizarProduto'
-import CriarProduto from './pages/produto/CriarProduto'
+
 import ListaProduto from './pages/produto/ListaProduto'
 
 const Rotas =() => {
@@ -20,11 +22,10 @@ const Rotas =() => {
         <Route path="/genreList" element={<GenreList />} />
         <Route path="/updateGenre" element={<UpdateGenre />} />
 
+        <Route path="/CreateEvent" element={<CreateEvent />} />
         <Route path="/ListaProduto" element={<ListaProduto />} />
         <Route path="/AtualizarProduto" element={<AtualizarProduto />} />
-        <Route path="/CriarProduto" element={<CriarProduto />} />
-  
- 
+    
       </Routes>
       </BrowserRouter>
     </div>
