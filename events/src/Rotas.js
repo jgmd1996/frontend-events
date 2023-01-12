@@ -8,7 +8,8 @@ import Home from './pages/Home'
 
 import CreateEvent from './pages/produto/CreateEvent';
 import EvetList from './pages/produto/EvetList';
-import AtualizarProduto from './pages/produto/AtualizarProduto'
+import UpdateEvent from './pages/produto/UpdateEvent';
+
 
 
 
@@ -25,7 +26,7 @@ const Rotas =() => {
 
         <Route path="/CreateEvent" element={<CreateEvent />} />
         <Route path="/EvetList" element={<EvetList />} />
-        <Route path="/AtualizarProduto" element={<AtualizarProduto />} />
+        <Route path="/UpdateEvent" element={<UpdateEvent />} />
     
       </Routes>
       </BrowserRouter>

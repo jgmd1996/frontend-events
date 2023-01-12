@@ -9,7 +9,7 @@ function EvetList() {
     const [refreshPage, setRefreshPage] = useState('');
 
     const redirect = (item) => {
-        navigate('/AtualizarProduto', { replace: false, state: { item: item } });//
+        navigate('/UpdateEvent', { replace: false, state: { item: item } });//
     }
 
     useEffect(() => {
