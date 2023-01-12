@@ -7,9 +7,10 @@ import UpdateGenre from './pages/Genre/UpdateGenre';
 import Home from './pages/Home'
 
 import CreateEvent from './pages/produto/CreateEvent';
+import EvetList from './pages/produto/EvetList';
 import AtualizarProduto from './pages/produto/AtualizarProduto'
 
-import ListaProduto from './pages/produto/ListaProduto'
+
 
 const Rotas =() => {
   return (
@@ -23,7 +24,7 @@ const Rotas =() => {
         <Route path="/updateGenre" element={<UpdateGenre />} />
 
         <Route path="/CreateEvent" element={<CreateEvent />} />
-        <Route path="/ListaProduto" element={<ListaProduto />} />
+        <Route path="/EvetList" element={<EvetList />} />
         <Route path="/AtualizarProduto" element={<AtualizarProduto />} />
     
       </Routes>

@@ -19,7 +19,7 @@ function Home() {
 
             <tr>
               <td><Link to="/genreList">Lista Genero</Link></td>
-              <td><Link to="/ListaProduto">Lista produto</Link></td>
+              <td><Link to="/EvetList">Lista evento</Link></td>
             </tr>
 
           </tbody>
