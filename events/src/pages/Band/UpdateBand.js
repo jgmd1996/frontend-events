@@ -11,9 +11,10 @@ function UpdateBand() {
   const animatedComponents = makeAnimated();
 
   // selecionar e busca genre
-  const [genres, setGenres] = useState([]);
-  const [selectedGenre, setSelectedGenre] = useState({});
   const stateGender = state.item.genre.map(genre => ({value: genre._id, label: genre.name}));
+  const [selectedGenre, setSelectedGenre] = useState({});
+  const [genres, setGenres] = useState([]);
+
   useEffect(() => {
     async function fetchMyAPI() {
       let response = await fetch("http://localhost:3001/genre");
@@ -25,83 +26,92 @@ function UpdateBand() {
     fetchMyAPI();
   }, []);
   //
+
   // selecionar e busca a banda
-  const [band, setBand] = useState([]);
-  const [selectedBand, setSelectedBand] = useState({});
-  const stateBand = state.item.band.map(band => ({value: band._id, label: band.name}));
+  const [event, setEvent] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState({});
+  const stateEvent = state.item.event.map(event => ({value: event._id, label: event.name}));
   useEffect(() => {
     async function fetchMyAPI() {
-      let response = await fetch("http://localhost:3001/band");
-      const genresApi = await response.json();
-      const genresSelect = genresApi.map(genreApi => ({ value: genreApi._id, label: genreApi.name }));
-      setBand(genresSelect);
+      let response = await fetch("http://localhost:3001/event");
+      const eventApi = await response.json();
+      const eventsSelect = eventApi.map(eventApi => ({ value: eventApi._id, label: eventApi.name }));
+      setEvent(eventsSelect);
     }
 
     fetchMyAPI();
   }, []);
   //
+
 const RegisterSchema = Yup.object().shape({
   name: Yup.string()
-  .min(2, 'Muito curto!')
-  .max(200, 'Muito grande!')
-  .required('name obrigatório!'),
+      .min(2, 'Muito curto!')
+      .max(200, 'Muito grande!')
+      .required('name obrigatório!'),
 
-address: Yup.string()
-  .min(2, 'Muito curto!')
-  .max(200, 'Muito grande!')
-  .required('Endereço obrigatório!'),
+    numbermembers: Yup.number()
+      .min(1, 'Muito curto!')
+      .max(500, 'Muito grande!')
+      .required('Numero de integrantes obrigatório!'),
 
-presentationlocation: Yup.string()
-  .min(2, 'Muito curto!')
-  .max(200, 'Muito grande!')
-  .required('local de apresentação obrigatório!'),
+      contact: Yup.number()
+      .min(11, 'Muito curto!')
+      .max(99999999999, 'Muito grande!')
+      .required('Contato obrigatório!'),
 
-targetaudience: Yup.string()
-  .min(2, 'Muito curto!')
-  .max(200, 'Muito grande!')
-  .required('Publico alvo obrigatório!'),
+      email: Yup.string()
+      .min(2, 'Muito curto!')
+      .max(200, 'Muito grande!')
+      .required('E-mail obrigatório!'),
 
-cache: Yup.number()
-  .min(2, 'Muito curto!')
-  .max(200, 'Muito grande!')
-  .required('Cache obrigatório!'),
+      logo: Yup.string()
+      .min(2, 'Muito curto!')
+      .max(200, 'Muito grande!')
+      .required('logo obrigatório!'),
 
-bandinstruments: Yup.string()
-  .min(2, 'Muito curto!')
-  .max(200, 'Muito grande!')
-  .required('Informe se os intrumentos são da banda ou do evento!'),
+      bandphoto: Yup.string()
+      .min(2, 'Muito curto!')
+      .max(200, 'Muito grande!')
+      .required('Foto da banda obrigadorio'),
 
-  expectedaudience: Yup.number()
-  .min(2, 'Muito curto!')
-  .max(200, 'Muito grande!')
-  .required('Publico esperado obrigatório!')
+      targetaudience: Yup.string()
+      .min(2, 'Muito curto!')
+      .max(200, 'Muito grande!')
+      .required('Publico alvo obrigatório!'),
+
+      cache: Yup.number()
+      .min(2, 'Muito curto!')
+      .max(200, 'Muito grande!')
+      .required('Cache obrigatório!')
 });
 
 const formik = useFormik({
   initialValues: {
     name: state.item.name,
-    address: state.item.address,
-    presentationlocation: state.item.presentationLocation,
+    numbermembers: state.item.numberMembers,
+    contact: state.item.contact,
+    email: state.item.email,
+    logo: state.item.logo,
+    bandphoto: state.item.bandPhoto,
     targetaudience: state.item.targetAudience,
     cache: state.item.cache,
-    bandinstruments: state.item.bandInstruments,
-    expectedaudience: state.item.expectedAudience,
     genre: state.item.genre,
-    band: state.item.band,
+    event: state.item.event,
   },
   validationSchema: RegisterSchema,
 
   onSubmit: async (values) => {
     const body = { 
-      name: values.name,
-      address: values.address,
-      presentationLocation: values.presentationlocation,
-      targetAudience: values.targetaudience,
-      cache: values.cache,
-      bandInstruments: values.bandinstruments,
-      expectedAudience: values.expectedaudience,
-      genre: selectedGenre.map(id => id.value),
-      band: selectedBand.map(id => id.value)
+        name: values.name,
+        numberMembers: values.numbermembers,
+        contact: values.contact,
+        email: values.email,
+        logo: values.logo,
+        bandPhoto: values.bandphoto,
+        targetAudience: values.targetaudience,
+        cache: values.cache,
+        genre: selectedGenre.map(id => id.value),
+        event: selectedEvent.map(id => id.value)
      }
     const settings = {
       method: 'put',
@@ -131,13 +141,12 @@ const { errors, touched, handleSubmit, getFieldProps } = formik;
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
 
-        <h1>Atuallizar evento</h1>
+        <h1>Atuallizar Banda</h1>
         <div>
             <input
               type="text"
               id="name"
-              name="name"
-              placeholder="Digite o name do evento"
+              placeholder="Digite o name da banda"
               {...getFieldProps('name')}
             />
             <div>{touched.name && errors.name}</div>
@@ -145,32 +154,61 @@ const { errors, touched, handleSubmit, getFieldProps } = formik;
 
           <div>
             <input
-              type="text"
-              id="address"
-              address="address"
-              placeholder="Digite o endereço do evento"
-              {...getFieldProps('address')}
+              type="number"
+              id="numbermembers"
+              placeholder="Digite o numero de integrantes"
+              {...getFieldProps('numbermembers')}
             />
-            <div>{touched.address && errors.address}</div>
+            <div>{touched.numbermembers && errors.numbermembers}</div>
           </div>
 
           <div>
             <input
               type="text"
-              id="presentationlocation"
-              presentationLocation="presentationlocation"
-              placeholder="Digite o local de apresentaçao do evento"
-              {...getFieldProps('presentationlocation')}
+              id="contact"
+              contact="contact"
+              placeholder="Digite o contato"
+              {...getFieldProps('contact')}
             />
-            <div>{touched.presentationlocation && errors.presentationlocation}</div>
+            <div>{touched.contact && errors.contact}</div>
+          </div>
+
+          <div>
+            <input
+              type="text"
+              id="email"
+              email="email"
+              placeholder="Digite o E-mail"
+              {...getFieldProps('email')}
+            />
+            <div>{touched.email && errors.email}</div>
+          </div>
+
+          <div>
+            <input
+              type="text"
+              id="logo"
+              placeholder="Digite a logo"
+              {...getFieldProps('logo')}
+            />
+            <div>{touched.logo && errors.logo}</div>
+          </div>
+
+          <div>
+            <input
+              type="text"
+              id="bandphoto"
+              placeholder="Imagem da banda"
+              {...getFieldProps('bandphoto')}
+            />
+            <div>{touched.bandphoto && errors.bandphoto}</div>
           </div>
 
           <div>
             <input
               type="text"
               id="targetaudience"
-              targetaudience="targetaudience"
-              placeholder="Digite o publico alvo do evento"
+              placeholder="Digite o publico alvo"
               {...getFieldProps('targetaudience')}
             />
             <div>{touched.targetaudience && errors.targetaudience}</div>
@@ -180,36 +218,14 @@ const { errors, touched, handleSubmit, getFieldProps } = formik;
             <input
               type="number"
               id="cache"
-              cache="cache"
-              placeholder="Digite o cache do evento"
+              placeholder="Digite o cache"
               {...getFieldProps('cache')}
             />
             <div>{touched.cache && errors.cache}</div>
           </div>
+          
 
-          <div>
-            <input
-              type="text"
-              id="bandinstruments"
-              bandinstruments="bandinstruments"
-              placeholder="Instrumentos da banda?"
-              {...getFieldProps('bandinstruments')}
-            />
-            <div>{touched.bandinstruments && errors.bandinstruments}</div>
-          </div>
-
-          <div>
-            <input
-              type="number"
-              id="expectedaudience"
-              expectedaudience="expectedaudience"
-              placeholder="Digite a espectativa de audiencia do evento"
-              {...getFieldProps('expectedaudience')}
-            />
-            <div>{touched.expectedaudience && errors.expectedaudience}</div>
-          </div>
-
-            <Select
+          <Select
             defaultValue={stateGender}
             components={animatedComponents}
             placeholder="Selecione o genero"
@@ -226,12 +242,12 @@ const { errors, touched, handleSubmit, getFieldProps } = formik;
           />
 
           <Select
-          defaultValue={stateBand}
+            defaultValue={stateEvent}
             components={animatedComponents}
-            placeholder="Selecione a categoria"
+            placeholder="Selecione o evento"
             isMulti
-            options={band}
-            onChange={(item) => setSelectedBand(item)}
+            options={event}
+            onChange={(item) => setSelectedEvent(item)}
             className="select"
             isClearable={true}
             isSearchable={true}

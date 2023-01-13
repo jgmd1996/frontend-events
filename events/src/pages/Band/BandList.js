@@ -9,12 +9,12 @@ function BandList() {
     const [refreshPage, setRefreshPage] = useState('');
 
     const redirect = (item) => {
-        navigate('/UpdateEvent', { replace: false, state: { item: item } });//
+        navigate('/UpdateBand', { replace: false, state: { item: item } });//
     }
 
     useEffect(() => {
         async function fetchMyAPI() {
-            let response = await fetch("http://localhost:3001/event")
+            let response = await fetch("http://localhost:3001/band")
             const events = await response.json()
             setItens(events)
         }
@@ -22,7 +22,7 @@ function BandList() {
     }, [refreshPage]);
 
     async function deletarCategoria(id) {
-        let result = await fetch("http://localhost:3001/event/" + id, {
+        let result = await fetch("http://localhost:3001/band/" + id, {
             method: 'DELETE',
             headers: {
                 'Authorization': 'Bearer my-token',
@@ -40,12 +40,13 @@ function BandList() {
                 <tbody>
                     <tr>
                         <td>Nome</td>
-                        <td>endereço</td>
-                        <td>local de apresentação</td>
+                        <td>Menbros</td>
+                        <td>contato</td>
+                        <td>E-mail</td>
+                        <td>Logo</td>
+                        <td>imagem da banda</td>
                         <td>publico alvo</td>
                         <td>cache</td>
-                        <td>instrumentos da banda</td>
-                        <td>Publico alvo</td>
                         <td>ID</td>
                         <td>Atualizar</td>
                         <td>Deletar</td>
@@ -54,12 +55,13 @@ function BandList() {
 
                         return <tr key={item._id} style={{ border: "1px solid" }}>
                             <td style={{ border: "1px solid" }}>{item.name}</td>
-                            <td style={{ border: "1px solid" }}>{item.address}</td>
-                            <td style={{ border: "1px solid" }}>{item.presentationLocation}</td>
+                            <td style={{ border: "1px solid" }}>{item.numberMembers}</td>
+                            <td style={{ border: "1px solid" }}>{item.contact}</td>
+                            <td style={{ border: "1px solid" }}>{item.email}</td>
+                            <td style={{ border: "1px solid" }}>{item.logo}</td>
+                            <td style={{ border: "1px solid" }}>{item.bandPhoto}</td>
                             <td style={{ border: "1px solid" }}>{item.targetAudience}</td>
                             <td style={{ border: "1px solid" }}>{item.cache}</td>
-                            <td style={{ border: "1px solid" }}>{item.bandInstruments}</td>
-                            <td style={{ border: "1px solid" }}>{item.expectedAudience}</td>
                             <td style={{ border: "1px solid" }}>{item._id}</td>
                             <td style={{ border: "1px solid" }}><button onClick={() => redirect(item)}>Atualizar</button> </td>
                             <td style={{ border: "1px solid" }}><button onClick={() => deletarCategoria(item._id)}>Deletar</button> </td>
