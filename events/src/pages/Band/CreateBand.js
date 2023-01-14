@@ -147,7 +147,6 @@ function CreateBand() {
             <input
               type="text"
               id="name"
-              name="name"
               placeholder="Digite o name da banda"
               {...getFieldProps('name')}
             />
@@ -158,7 +157,6 @@ function CreateBand() {
             <input
               type="number"
               id="numbermembers"
-              numbermembers="numbermembers"
               placeholder="Digite o numero de integrantes"
               {...getFieldProps('numbermembers')}
             />
@@ -169,7 +167,6 @@ function CreateBand() {
             <input
               type="text"
               id="contact"
-              contact="contact"
               placeholder="Digite o contato"
               {...getFieldProps('contact')}
             />
@@ -180,7 +177,6 @@ function CreateBand() {
             <input
               type="text"
               id="email"
-              email="email"
               placeholder="Digite o E-mail"
               {...getFieldProps('email')}
             />
@@ -191,7 +187,6 @@ function CreateBand() {
             <input
               type="text"
               id="logo"
-              logo="logo"
               placeholder="Digite a logo"
               {...getFieldProps('logo')}
             />
@@ -202,7 +197,6 @@ function CreateBand() {
             <input
               type="text"
               id="bandphoto"
-              bandphoto="bandphoto"
               placeholder="Imagem da banda"
               {...getFieldProps('bandphoto')}
             />
@@ -213,7 +207,6 @@ function CreateBand() {
             <input
               type="text"
               id="targetaudience"
-              targetaudience="targetaudience"
               placeholder="Digite o publico alvo"
               {...getFieldProps('targetaudience')}
             />
@@ -224,7 +217,6 @@ function CreateBand() {
             <input
               type="number"
               id="cache"
-              cache="cache"
               placeholder="Digite o cache"
               {...getFieldProps('cache')}
             />

@@ -53,7 +53,6 @@ function  CreateGenre() {
             <input
               type="text"
               id="name"
-              name="name"
               placeholder="Digite o novo Género"
               {...getFieldProps('name')}
             />

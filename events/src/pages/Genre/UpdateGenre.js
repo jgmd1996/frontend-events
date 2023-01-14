@@ -54,7 +54,6 @@ function UpdateGenre() {
             <input
               type="text"
               id="name"
-              name="name"
               placeholder="Digite a Género"
               {...getFieldProps('name')}
             />

@@ -140,7 +140,6 @@ function CreateEvent() {
             <input
               type="text"
               id="name"
-              name="name"
               placeholder="Digite o name do evento"
               {...getFieldProps('name')}
             />
@@ -151,7 +150,6 @@ function CreateEvent() {
             <input
               type="text"
               id="address"
-              address="address"
               placeholder="Digite o endereço do evento"
               {...getFieldProps('address')}
             />
@@ -162,7 +160,6 @@ function CreateEvent() {
             <input
               type="text"
               id="presentationlocation"
-              presentationLocation="presentationlocation"
               placeholder="Digite o local de apresentaçao do evento"
               {...getFieldProps('presentationlocation')}
             />
@@ -173,7 +170,6 @@ function CreateEvent() {
             <input
               type="text"
               id="targetaudience"
-              targetaudience="targetaudience"
               placeholder="Digite o publico alvo do evento"
               {...getFieldProps('targetaudience')}
             />
@@ -184,7 +180,6 @@ function CreateEvent() {
             <input
               type="number"
               id="cache"
-              cache="cache"
               placeholder="Digite o cache do evento"
               {...getFieldProps('cache')}
             />
@@ -195,7 +190,6 @@ function CreateEvent() {
             <input
               type="text"
               id="bandinstruments"
-              bandinstruments="bandinstruments"
               placeholder="Instrumentos da banda?"
               {...getFieldProps('bandinstruments')}
             />
@@ -206,7 +200,6 @@ function CreateEvent() {
             <input
               type="number"
               id="expectedaudience"
-              expectedaudience="expectedaudience"
               placeholder="Digite a espectativa de audiencia do evento"
               {...getFieldProps('expectedaudience')}
             />

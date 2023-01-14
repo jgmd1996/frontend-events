@@ -166,7 +166,6 @@ const { errors, touched, handleSubmit, getFieldProps } = formik;
             <input
               type="text"
               id="contact"
-              contact="contact"
               placeholder="Digite o contato"
               {...getFieldProps('contact')}
             />
@@ -177,7 +176,6 @@ const { errors, touched, handleSubmit, getFieldProps } = formik;
             <input
               type="text"
               id="email"
-              email="email"
               placeholder="Digite o E-mail"
               {...getFieldProps('email')}
             />
