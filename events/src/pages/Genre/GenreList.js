@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 function GenreList() {
     
-    const [itens, setItens] = useState([])
+    const [itens, setItens] = useState([]);
     const navigate = useNavigate();
     const [refreshGage, setRefreshGage] = useState('');
 
@@ -16,11 +16,14 @@ function GenreList() {
     useEffect(() => {
         async function fetchMyAPI() {
             let response = await fetch("http://localhost:3001/genre");
-            const genres = await response.json();
-            setItens(genres);
+            const body = await response.json();
+            console.log("body",body)
+            setItens(body.genres);
         }
         fetchMyAPI()
     }, [refreshGage]);
+
+    console.log("itens",itens);
 
     async function deleteGenre(id) {
         let result = await fetch("http://localhost:3001/genre/" + id, {
@@ -34,7 +37,9 @@ function GenreList() {
         console.warn(result);
         setRefreshGage(result);
     };
+    
     return (
+
         <div>
             <table style={{ border: "1px solid" }}>
                 <tbody>
@@ -45,7 +50,7 @@ function GenreList() {
                         <td>Atualizar</td>
                         <td>Deletar</td>
                     </tr>
-
+        
                     {itens.map(item => {
                         return <tr key={item._id} style={{ border: "1px solid" }}>
                             <td style={{ border: "1px solid" }}>{item.name}</td>
@@ -53,8 +58,8 @@ function GenreList() {
                             <td style={{ border: "1px solid" }}><button onClick={() => redirect(item)}>Atualizar</button> </td>
                             <td style={{ border: "1px solid" }}><button onClick={() => deleteGenre(item._id)}>Deletar</button> </td>
                         </tr>
-                    })}
-
+                    })
+                    }
                 </tbody>
             </table>
             <Link to="/">Voltar para pagina inicial</Link>

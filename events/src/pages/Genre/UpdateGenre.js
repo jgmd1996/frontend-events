@@ -16,12 +16,16 @@ function UpdateGenre() {
 
   const formik = useFormik({
   initialValues: {
+    id: state.item._id,
     name: state.item.name
   },
   validationSchema: RegisterSchema,
 
   onSubmit: async (values) => {
-    const body = { name: values.name }
+    const body = { 
+      id: values.id,
+      name: values.name 
+    }
     const settings = {
       method: 'put',
       headers: {
@@ -29,10 +33,13 @@ function UpdateGenre() {
         'Accept': 'application/json',
       },
       body: JSON.stringify(body)
+      
     };
+    
     try {
-      const fetchResponse = await fetch('http://localhost:3001/genre/' + state.item._id, settings);  
+      const fetchResponse = await fetch('http://localhost:3001/genre/', settings);  
       console.log("fetchResponse",fetchResponse);
+      console.log("settings",settings)
       if (fetchResponse.status === 200) {
         formik.setFieldValue("name", null);
         navigate('/genreList', { replace: true });
