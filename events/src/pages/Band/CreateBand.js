@@ -8,39 +8,38 @@ import makeAnimated from "react-select/animated";
 import "./style.css";
 
 function CreateBand() {
-
   const animatedComponents = makeAnimated();
   const navigate = useNavigate();
 
   // selecionar e busca genre
   const [selectedGenre, setSelectedGenre] = useState({});
+  console.log("selectedGenre",selectedGenre);
+
   const [genres, setGenres] = useState([]);
+  //console.log("genres",genres);
   useEffect(() => {
     async function fetchMyAPI() {
       let response = await fetch("http://localhost:3001/genre");
-      const genresApi = await response.json();
-      const genresSelect = genresApi.map(genreApi => ({ value: genreApi._id, label: genreApi.name }));
+      const body = await response.json();
+      const genresSelect = body.genres.map(genreApi => ({ value: genreApi._id, label: genreApi.name }));
       setGenres(genresSelect);
     }
 
     fetchMyAPI();
   }, []);
-  //
-
-  // selecionar e busca a banda
-  const [event, setEvent] = useState([]);
-  const [selectedEvent, setSelectedEvent] = useState({});
-  useEffect(() => {
-    async function fetchMyAPI() {
-      let response = await fetch("http://localhost:3001/event");
-      const genresApi = await response.json();
-      const eventsSelect = genresApi.map(genreApi => ({ value: genreApi._id, label: genreApi.name }));
-      setEvent(eventsSelect);
-    }
-
-    fetchMyAPI();
-  }, []);
-  //
+  
+  // // selecionar e busca a banda
+  // const [event, setEvent] = useState([]);
+  // const [selectedEvent, setSelectedEvent] = useState({});
+  // useEffect(() => {
+  //   async function fetchMyAPI() {
+  //     let response = await fetch("http://localhost:3001/event");
+  //     const genresApi = await response.json();
+  //     const eventsSelect = genresApi.map(genreApi => ({ value: genreApi._id, label: genreApi.name }));
+  //     setEvent(eventsSelect);
+  //   }
+  //   fetchMyAPI();
+  // }, []);
 
   const RegisterSchema = Yup.object().shape({
     name: Yup.string()
@@ -48,12 +47,12 @@ function CreateBand() {
       .max(200, 'Muito grande!')
       .required('name obrigatório!'),
 
-    numbermembers: Yup.number()
+    numbermembers: Yup.string()
       .min(1, 'Muito curto!')
       .max(500, 'Muito grande!')
       .required('Numero de integrantes obrigatório!'),
 
-      contact: Yup.number()
+      contact: Yup.string()
       .min(11, 'Muito curto!')
       .max(99999999999, 'Muito grande!')
       .required('Contato obrigatório!'),
@@ -78,7 +77,7 @@ function CreateBand() {
       .max(200, 'Muito grande!')
       .required('Publico alvo obrigatório!'),
 
-      cache: Yup.number()
+      cache: Yup.string()
       .min(2, 'Muito curto!')
       .max(200, 'Muito grande!')
       .required('Cache obrigatório!')
@@ -93,9 +92,7 @@ function CreateBand() {
       logo: '',
       bandphoto: '',
       targetaudience: '',
-      cache:'',
-      genre: '',
-      event: ''
+      cache:''
     },
 
     validationSchema: RegisterSchema,
@@ -110,9 +107,10 @@ function CreateBand() {
         bandPhoto: values.bandphoto,
         targetAudience: values.targetaudience,
         cache: values.cache,
-        genre: selectedGenre.map(id => id.value),
-        event: selectedEvent.map(id => id.value)
+        genre: selectedGenre.map(id => ({ _id: id.value}))
       };
+      console.log("body.genre",body.genre)
+      //console.log("body",body)
       const settings = {
         method: 'POST',
         headers: {
@@ -120,11 +118,12 @@ function CreateBand() {
           'Accept': 'application/json',
         },
         body: JSON.stringify(body)
-
       };
       try {
+        console.log("body",body)
         const fetchResponse = await fetch('http://localhost:3001/band', settings);
         console.log("fetchResponse", fetchResponse);
+        console.log("settings",settings)
         if (fetchResponse.status === 201) {
           formik.setFieldValue("name", null);
           navigate('/BandList', { replace: true });
@@ -155,7 +154,7 @@ function CreateBand() {
 
           <div>
             <input
-              type="number"
+              type="text"
               id="numbermembers"
               placeholder="Digite o numero de integrantes"
               {...getFieldProps('numbermembers')}
@@ -215,7 +214,7 @@ function CreateBand() {
 
           <div>
             <input
-              type="number"
+              type="text"
               id="cache"
               placeholder="Digite o cache"
               {...getFieldProps('cache')}
@@ -229,21 +228,6 @@ function CreateBand() {
             isMulti
             options={genres}
             onChange={(item) => setSelectedGenre(item)}
-            className="select"
-            isClearable={true}
-            isSearchable={true}
-            isDisabled={false}
-            isLoading={false}
-            isRtl={false}
-            closeMenuOnSelect={false}
-          />
-
-          <Select
-            components={animatedComponents}
-            placeholder="Selecione o evento"
-            isMulti
-            options={event}
-            onChange={(item) => setSelectedEvent(item)}
             className="select"
             isClearable={true}
             isSearchable={true}

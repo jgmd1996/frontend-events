@@ -15,8 +15,8 @@ function BandList() {
     useEffect(() => {
         async function fetchMyAPI() {
             let response = await fetch("http://localhost:3001/band")
-            const events = await response.json()
-            setItens(events)
+            const body = await response.json()
+            setItens(body.bands)
         }
         fetchMyAPI()
     }, [refreshPage]);
