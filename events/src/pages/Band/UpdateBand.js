@@ -6,26 +6,19 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
 function UpdateBand() {
+
   const navigate = useNavigate();
   const {state} = useLocation();
   const animatedComponents = makeAnimated();
 
 
-
-
-
-  // selecionar e busca genre
-  //const stateGender = state.item.genre.map(genreh => ({value: genreh._id, label: genreh.name}));
-  const stateGender = state.item.genre.map(id => id.value);
-  //category: selectedOptions.map(id => id.value)
-  console.log("stateGender",state)
-
-
-
+  const stateGender = state.item.genre.map(genreh => ({value: genreh._id, label: genreh.name}));
 
 
 
   const [selectedGenre, setSelectedGenre] = useState({});
+  
+  console.log("selectedGenre",selectedGenre)
   const [genres, setGenres] = useState([]);
 
   useEffect(() => {
@@ -46,12 +39,12 @@ const RegisterSchema = Yup.object().shape({
       .max(200, 'Muito grande!')
       .required('name obrigatório!'),
 
-    numbermembers: Yup.number()
+    numbermembers: Yup.string()
       .min(1, 'Muito curto!')
       .max(500, 'Muito grande!')
       .required('Numero de integrantes obrigatório!'),
 
-      contact: Yup.number()
+      contact: Yup.string()
       .min(11, 'Muito curto!')
       .max(99999999999, 'Muito grande!')
       .required('Contato obrigatório!'),
@@ -76,7 +69,7 @@ const RegisterSchema = Yup.object().shape({
       .max(200, 'Muito grande!')
       .required('Publico alvo obrigatório!'),
 
-      cache: Yup.number()
+      cache: Yup.string()
       .min(2, 'Muito curto!')
       .max(200, 'Muito grande!')
       .required('Cache obrigatório!')
@@ -101,15 +94,17 @@ const formik = useFormik({
     const body = { 
         id: values.id,
         name: values.name,
-        numberMembers: values.numbermembers,
-        contact: values.contact,
+        numberMembers: JSON.stringify(values.numbermembers),
+        contact: JSON.stringify(values.contact),
         email: values.email,
         logo: values.logo,
         bandPhoto: values.bandphoto,
         targetAudience: values.targetaudience,
-        cache: values.cache,
-        genre: selectedGenre.map(id => ({ _id: id.value}))
+        cache: JSON.stringify(values.cache),
+        genre: selectedGenre.map(id => ({_id:id.value}))
+
      }
+     console.log("body",body)
     const settings = {
       method: 'put',
       headers: {
@@ -118,20 +113,23 @@ const formik = useFormik({
       },
       body: JSON.stringify(body)
     };
-    console.log("body",body)
     try {
-      const fetchResponse = await fetch('http://localhost:3001/event/', settings);  
+      console.log("body",body)
+      const fetchResponse = await fetch('http://localhost:3001/band/',settings);  
       console.log("fetchResponse",fetchResponse);
+      console.log("body",body)
       if (fetchResponse.status === 200) {
         formik.setFieldValue("name", null);
-        navigate('/EvetList', { replace: true });
+        navigate('/BandList', { replace: true });
+        console.log("body",body)
       }
     } catch (e) {
+      console.log("body",body)
       console.error(e);
     }
   }
 });
-console.log("state.item",state.item.name)
+
 const { errors, touched, handleSubmit, getFieldProps } = formik;
 
   return (

@@ -4,7 +4,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import "./style.css";
 
 function BandList() {
+
     const [itens, setItens] = useState([]);
+
+    console.log(itens);
     const navigate = useNavigate();
     const [refreshPage, setRefreshPage] = useState('');
 
