@@ -13,16 +13,15 @@ function CreateEvent() {
   const navigate = useNavigate();
 
   // selecionar e busca genre
-  const [genres, setGenres] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState({});
+  const [genres, setGenres] = useState([]);
   useEffect(() => {
     async function fetchMyAPI() {
       let response = await fetch("http://localhost:3001/genre");
-      const genresApi = await response.json();
-      const genresSelect = genresApi.map(genreApi => ({ value: genreApi._id, label: genreApi.name }));
+      const body = await response.json();
+      const genresSelect = body.genres.map(genreApi => ({ value: genreApi._id, label: genreApi.name }));
       setGenres(genresSelect);
     }
-
     fetchMyAPI();
   }, []);
   //
@@ -33,14 +32,13 @@ function CreateEvent() {
   useEffect(() => {
     async function fetchMyAPI() {
       let response = await fetch("http://localhost:3001/band");
-      const genresApi = await response.json();
-      const genresSelect = genresApi.map(genreApi => ({ value: genreApi._id, label: genreApi.name }));
+      const body = await response.json();
+      const genresSelect = body.bands.map(bandApi => ({ value: bandApi._id, label: bandApi.name }));
       setBand(genresSelect);
     }
-
     fetchMyAPI();
   }, []);
-  //
+  
 
   const RegisterSchema = Yup.object().shape({
     name: Yup.string()
@@ -103,9 +101,10 @@ function CreateEvent() {
         cache: values.cache,
         bandInstruments: values.bandinstruments,
         expectedAudience: values.expectedaudience,
-        genre: selectedGenre.map(id => id.value),
-        band: selectedBand.map(id => id.value)
+        genre: selectedGenre.map(id => ({ _id: id.value})),
+        band: selectedBand.map(id => ({_id: id.value}))
       };
+      console.log("body",body)
       const settings = {
         method: 'POST',
         headers: {
@@ -115,19 +114,24 @@ function CreateEvent() {
         body: JSON.stringify(body)
 
       };
+      console.log("body",body)
       try {
+        console.log("body",body)
         const fetchResponse = await fetch('http://localhost:3001/event', settings);
         console.log("fetchResponse", fetchResponse);
+        console.log("body",body)
         if (fetchResponse.status === 201) {
           formik.setFieldValue("name", null);
-          navigate('/ListaProduto', { replace: true });
+          navigate('/BandList', { replace: true });
         }
       } catch (e) {
+        console.log("body",body)
         console.error(e);
       }
+      console.log("body",body)
     }
   });
-
+  
   const { errors, touched, handleSubmit, getFieldProps } = formik;
 
   return (
@@ -178,7 +182,7 @@ function CreateEvent() {
 
           <div>
             <input
-              type="number"
+              type="text"
               id="cache"
               placeholder="Digite o cache do evento"
               {...getFieldProps('cache')}
@@ -198,7 +202,7 @@ function CreateEvent() {
 
           <div>
             <input
-              type="number"
+              type="text"
               id="expectedaudience"
               placeholder="Digite a espectativa de audiencia do evento"
               {...getFieldProps('expectedaudience')}

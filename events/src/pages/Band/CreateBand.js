@@ -100,7 +100,7 @@ function CreateBand() {
     onSubmit: async (values) => {
       const body = {
         name: values.name,
-        numberMembers: Yup.string(values.numbermembers),
+        numberMembers: values.numbermembers,
         contact: values.contact,
         email: values.email,
         logo: values.logo,

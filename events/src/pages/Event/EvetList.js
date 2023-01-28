@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import "./style.css";
 
 function EvetList() {
+
     const [itens, setItens] = useState([]);
     const navigate = useNavigate();
     const [refreshPage, setRefreshPage] = useState('');
@@ -15,13 +16,13 @@ function EvetList() {
     useEffect(() => {
         async function fetchMyAPI() {
             let response = await fetch("http://localhost:3001/event")
-            const events = await response.json()
-            setItens(events)
+            const body = await response.json()
+            setItens(body.events)
         }
         fetchMyAPI()
     }, [refreshPage]);
 
-    async function deletarCategoria(id) {
+    async function deleteEvent(id) {
         let result = await fetch("http://localhost:3001/event/" + id, {
             method: 'DELETE',
             headers: {
@@ -62,7 +63,7 @@ function EvetList() {
                             <td style={{ border: "1px solid" }}>{item.expectedAudience}</td>
                             <td style={{ border: "1px solid" }}>{item._id}</td>
                             <td style={{ border: "1px solid" }}><button onClick={() => redirect(item)}>Atualizar</button> </td>
-                            <td style={{ border: "1px solid" }}><button onClick={() => deletarCategoria(item._id)}>Deletar</button> </td>
+                            <td style={{ border: "1px solid" }}><button onClick={() => deleteEvent(item._id)}>Deletar</button> </td>
 
                         </tr>
                     })}

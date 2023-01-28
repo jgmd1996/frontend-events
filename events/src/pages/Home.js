@@ -9,7 +9,7 @@ function Home() {
 
             <tr>
               <td>Categorias</td>
-              <td>produtos</td>
+              <td>Evento</td>
               <td>Banda</td>
             </tr>
 

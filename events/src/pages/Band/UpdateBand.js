@@ -11,16 +11,9 @@ function UpdateBand() {
   const {state} = useLocation();
   const animatedComponents = makeAnimated();
 
-
-  const stateGender = state.item.genre.map(genreh => ({value: genreh._id, label: genreh.name}));
-
-
-
-  const [selectedGenre, setSelectedGenre] = useState({});
-  
-  console.log("selectedGenre",selectedGenre)
   const [genres, setGenres] = useState([]);
-
+  const [selectedGenre, setSelectedGenre] = useState({});
+  const stateGender = state.item.genre.map(genreh => ({value: genreh._id, label: genreh.name}));
   useEffect(() => {
     async function fetchMyAPI() {
       let response = await fetch("http://localhost:3001/genre");
@@ -28,11 +21,9 @@ function UpdateBand() {
       const genresSelect = body.genres.map(genreApi => ({ value: genreApi._id, label: genreApi.name }));
       setGenres(genresSelect);
     }
-
     fetchMyAPI();
   }, []);
   
-
 const RegisterSchema = Yup.object().shape({
   name: Yup.string()
       .min(2, 'Muito curto!')
@@ -218,7 +209,6 @@ const { errors, touched, handleSubmit, getFieldProps } = formik;
             <div>{touched.cache && errors.cache}</div>
           </div>
           
-
           <Select
             defaultValue={stateGender}
             components={animatedComponents}

@@ -17,26 +17,24 @@ function UpdateEvent() {
   useEffect(() => {
     async function fetchMyAPI() {
       let response = await fetch("http://localhost:3001/genre");
-      const genresApi = await response.json();
-      const genresSelect = genresApi.map(genreApi => ({ value: genreApi._id, label: genreApi.name }));
+      const body = await response.json();
+      const genresSelect = body.genres.map(genreApi => ({ value: genreApi._id, label: genreApi.name }));
       setGenres(genresSelect);
     }
-
     fetchMyAPI();
   }, []);
   //
   // selecionar e busca a banda
-  const [band, setBand] = useState([]);
-  const [selectedBand, setSelectedBand] = useState({});
-  const stateBand = state.item.band.map(band => ({value: band._id, label: band.name}));
-  useEffect(() => {
-    async function fetchMyAPI() {
-      let response = await fetch("http://localhost:3001/band");
-      const genresApi = await response.json();
-      const genresSelect = genresApi.map(genreApi => ({ value: genreApi._id, label: genreApi.name }));
+  const [band, setBand] = useState([]);//
+  const [selectedBand, setSelectedBand] = useState({});//
+  const stateBand = state.item.band.map(band => ({value: band._id, label: band.name}));//
+  useEffect(() => {//
+    async function fetchMyAPI() {//
+      let response = await fetch("http://localhost:3001/band");//
+      const body = await response.json();
+      const genresSelect = body.bands.map(bandApi => ({ value: bandApi._id, label: bandApi.name }));
       setBand(genresSelect);
     }
-
     fetchMyAPI();
   }, []);
   //
@@ -61,7 +59,7 @@ targetaudience: Yup.string()
   .max(200, 'Muito grande!')
   .required('Publico alvo obrigatório!'),
 
-cache: Yup.number()
+cache: Yup.string()
   .min(2, 'Muito curto!')
   .max(200, 'Muito grande!')
   .required('Cache obrigatório!'),
@@ -71,7 +69,7 @@ bandinstruments: Yup.string()
   .max(200, 'Muito grande!')
   .required('Informe se os intrumentos são da banda ou do evento!'),
 
-  expectedaudience: Yup.number()
+  expectedaudience: Yup.string()
   .min(2, 'Muito curto!')
   .max(200, 'Muito grande!')
   .required('Publico esperado obrigatório!')
@@ -79,6 +77,7 @@ bandinstruments: Yup.string()
 
 const formik = useFormik({
   initialValues: {
+    id: state.item._id,
     name: state.item.name,
     address: state.item.address,
     presentationlocation: state.item.presentationLocation,
@@ -86,23 +85,25 @@ const formik = useFormik({
     cache: state.item.cache,
     bandinstruments: state.item.bandInstruments,
     expectedaudience: state.item.expectedAudience,
-    genre: state.item.genre,
-    band: state.item.band,
+    genre: state.item.genre.map(genreApi => ({ value: genreApi._id, label: genreApi.name })),
+    band: state.item.band.map(bandApi => ({ value: bandApi._id, label: bandApi.name })),
   },
   validationSchema: RegisterSchema,
 
   onSubmit: async (values) => {
     const body = { 
+      id: values.id,
       name: values.name,
       address: values.address,
       presentationLocation: values.presentationlocation,
       targetAudience: values.targetaudience,
-      cache: values.cache,
+      cache: JSON.stringify(values.cache),
       bandInstruments: values.bandinstruments,
-      expectedAudience: values.expectedaudience,
-      genre: selectedGenre.map(id => id.value),
-      band: selectedBand.map(id => id.value)
+      expectedAudience: JSON.stringify(values.expectedaudience),
+      genre: selectedGenre.map(id => ({_id:id.value})),
+      band: selectedBand.map(id => ({_id:id.value}))
      }
+     console.log("body",body)
     const settings = {
       method: 'put',
       headers: {
@@ -112,7 +113,7 @@ const formik = useFormik({
       body: JSON.stringify(body)
     };
     try {
-      const fetchResponse = await fetch('http://localhost:3001/event/' + state.item._id, settings);  
+      const fetchResponse = await fetch('http://localhost:3001/event/',settings);  
       console.log("fetchResponse",fetchResponse);
       if (fetchResponse.status === 200) {
         formik.setFieldValue("name", null);
@@ -121,6 +122,7 @@ const formik = useFormik({
     } catch (e) {
       console.error(e);
     }
+    console.log("body",body)
   }
 });
 
@@ -174,7 +176,7 @@ const { errors, touched, handleSubmit, getFieldProps } = formik;
 
           <div>
             <input
-              type="number"
+              type="text"
               id="cache"
               placeholder="Digite o cache do evento"
               {...getFieldProps('cache')}
@@ -194,7 +196,7 @@ const { errors, touched, handleSubmit, getFieldProps } = formik;
 
           <div>
             <input
-              type="number"
+              type="text"
               id="expectedaudience"
               placeholder="Digite a espectativa de audiencia do evento"
               {...getFieldProps('expectedaudience')}
