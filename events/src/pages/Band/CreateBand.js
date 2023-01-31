@@ -80,7 +80,10 @@ function CreateBand() {
       cache: Yup.string()
       .min(2, 'Muito curto!')
       .max(200, 'Muito grande!')
-      .required('Cache obrigatório!')
+      .required('Cache obrigatório!'),
+
+      genre: Yup.string()
+      .required('genero obrigatório!')
   });
 
   const formik = useFormik({
@@ -92,7 +95,8 @@ function CreateBand() {
       logo: '',
       bandphoto: '',
       targetaudience: '',
-      cache:''
+      cache:'',
+      genre:''
     },
 
     validationSchema: RegisterSchema,
@@ -109,8 +113,6 @@ function CreateBand() {
         cache: values.cache,
         genre: selectedGenre.map(id => ({ _id: id.value}))
       };
-      console.log("body.genre",body.genre)
-      //console.log("body",body)
       const settings = {
         method: 'POST',
         headers: {
@@ -140,7 +142,7 @@ function CreateBand() {
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
-          <h1>Criar Evento</h1>
+          <h1>Criar Banda</h1>
 
           <div>
             <input
@@ -222,10 +224,12 @@ function CreateBand() {
             <div>{touched.cache && errors.cache}</div>
           </div>
 
+        <div>
           <Select
             components={animatedComponents}
             placeholder="Selecione o genero"
             isMulti
+            id="genre"
             options={genres}
             onChange={(item) => setSelectedGenre(item)}
             className="select"
@@ -236,6 +240,9 @@ function CreateBand() {
             isRtl={false}
             closeMenuOnSelect={false}
           />
+       
+          <div>{touched.genre && errors.genre}</div>
+          </div>
 
           <div>{touched.category && errors.category}</div>
           <button type='submit'  >Criar produtos</button>

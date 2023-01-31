@@ -8,7 +8,7 @@ function Home() {
           <tbody>
 
             <tr>
-              <td>Categorias</td>
+              <td>Generos</td>
               <td>Evento</td>
               <td>Banda</td>
             </tr>

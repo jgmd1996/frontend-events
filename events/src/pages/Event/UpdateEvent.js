@@ -10,20 +10,8 @@ function UpdateEvent() {
   const {state} = useLocation();
   const animatedComponents = makeAnimated();
 
-  // selecionar e busca genre
-  const [genres, setGenres] = useState([]);
-  const [selectedGenre, setSelectedGenre] = useState({});
-  const stateGender = state.item.genre.map(genre => ({value: genre._id, label: genre.name}));
-  useEffect(() => {
-    async function fetchMyAPI() {
-      let response = await fetch("http://localhost:3001/genre");
-      const body = await response.json();
-      const genresSelect = body.genres.map(genreApi => ({ value: genreApi._id, label: genreApi.name }));
-      setGenres(genresSelect);
-    }
-    fetchMyAPI();
-  }, []);
-  //
+ 
+ 
   // selecionar e busca a banda
   const [band, setBand] = useState([]);//
   const [selectedBand, setSelectedBand] = useState({});//
@@ -85,7 +73,6 @@ const formik = useFormik({
     cache: state.item.cache,
     bandinstruments: state.item.bandInstruments,
     expectedaudience: state.item.expectedAudience,
-    genre: state.item.genre.map(genreApi => ({ value: genreApi._id, label: genreApi.name })),
     band: state.item.band.map(bandApi => ({ value: bandApi._id, label: bandApi.name })),
   },
   validationSchema: RegisterSchema,
@@ -100,7 +87,6 @@ const formik = useFormik({
       cache: JSON.stringify(values.cache),
       bandInstruments: values.bandinstruments,
       expectedAudience: JSON.stringify(values.expectedaudience),
-      genre: selectedGenre.map(id => ({_id:id.value})),
       band: selectedBand.map(id => ({_id:id.value}))
      }
      console.log("body",body)
@@ -204,26 +190,10 @@ const { errors, touched, handleSubmit, getFieldProps } = formik;
             <div>{touched.expectedaudience && errors.expectedaudience}</div>
           </div>
 
-            <Select
-            defaultValue={stateGender}
-            components={animatedComponents}
-            placeholder="Selecione o genero"
-            isMulti
-            options={genres}
-            onChange={(item) => setSelectedGenre(item)}
-            className="select"
-            isClearable={true}
-            isSearchable={true}
-            isDisabled={false}
-            isLoading={false}
-            isRtl={false}
-            closeMenuOnSelect={false}
-          />
-
           <Select
           defaultValue={stateBand}
             components={animatedComponents}
-            placeholder="Selecione a categoria"
+            placeholder="Selecione a banda"
             isMulti
             options={band}
             onChange={(item) => setSelectedBand(item)}

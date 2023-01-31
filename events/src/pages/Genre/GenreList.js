@@ -6,9 +6,8 @@ function GenreList() {
     
     const [itens, setItens] = useState([]);
     const navigate = useNavigate();
-    const [refreshGage, setRefreshGage] = useState('');
+    const [refreshPage, setRefreshPage] = useState('');
 
-    
     const redirect = (item) => {
         navigate('/updateGenre', { replace: false, state: { item: item } });
     };
@@ -21,9 +20,7 @@ function GenreList() {
             setItens(body.genres);
         }
         fetchMyAPI()
-    }, [refreshGage]);
-
-    console.log("itens",itens);
+    }, [refreshPage]);
 
     async function deleteGenre(id) {
         let result = await fetch("http://localhost:3001/genre/" + id, {
@@ -35,7 +32,7 @@ function GenreList() {
         });
         result = await result.json();
         console.warn(result);
-        setRefreshGage(result);
+        setRefreshPage(result);
     };
     
     return (

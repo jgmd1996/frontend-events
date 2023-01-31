@@ -11,21 +11,7 @@ function CreateEvent() {
 
   const animatedComponents = makeAnimated();
   const navigate = useNavigate();
-
-  // selecionar e busca genre
-  const [selectedGenre, setSelectedGenre] = useState({});
-  const [genres, setGenres] = useState([]);
-  useEffect(() => {
-    async function fetchMyAPI() {
-      let response = await fetch("http://localhost:3001/genre");
-      const body = await response.json();
-      const genresSelect = body.genres.map(genreApi => ({ value: genreApi._id, label: genreApi.name }));
-      setGenres(genresSelect);
-    }
-    fetchMyAPI();
-  }, []);
-  //
-
+  
   // selecionar e busca a banda
   const [band, setBand] = useState([]);
   const [selectedBand, setSelectedBand] = useState({});
@@ -86,7 +72,6 @@ function CreateEvent() {
       cache: '',
       bandinstruments: '',
       expectedaudience: '',
-      genre: '',
       band: ''
     },
 
@@ -101,7 +86,6 @@ function CreateEvent() {
         cache: values.cache,
         bandInstruments: values.bandinstruments,
         expectedAudience: values.expectedaudience,
-        genre: selectedGenre.map(id => ({ _id: id.value})),
         band: selectedBand.map(id => ({_id: id.value}))
       };
       console.log("body",body)
@@ -122,7 +106,7 @@ function CreateEvent() {
         console.log("body",body)
         if (fetchResponse.status === 201) {
           formik.setFieldValue("name", null);
-          navigate('/BandList', { replace: true });
+          navigate('/EvetList', { replace: true });
         }
       } catch (e) {
         console.log("body",body)
@@ -138,7 +122,7 @@ function CreateEvent() {
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
-          <h1>Criar Evento</h1>
+          <h1>Criar evento</h1>
 
           <div>
             <input
@@ -210,24 +194,11 @@ function CreateEvent() {
             <div>{touched.expectedaudience && errors.expectedaudience}</div>
           </div>
 
-          <Select
-            components={animatedComponents}
-            placeholder="Selecione o genero"
-            isMulti
-            options={genres}
-            onChange={(item) => setSelectedGenre(item)}
-            className="select"
-            isClearable={true}
-            isSearchable={true}
-            isDisabled={false}
-            isLoading={false}
-            isRtl={false}
-            closeMenuOnSelect={false}
-          />
+          
 
           <Select
             components={animatedComponents}
-            placeholder="Selecione a categoria"
+            placeholder="Selecione a banda"
             isMulti
             options={band}
             onChange={(item) => setSelectedBand(item)}

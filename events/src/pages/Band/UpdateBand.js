@@ -63,7 +63,12 @@ const RegisterSchema = Yup.object().shape({
       cache: Yup.string()
       .min(2, 'Muito curto!')
       .max(200, 'Muito grande!')
-      .required('Cache obrigatório!')
+      .required('Cache obrigatório!'),
+
+      genre: Yup.string()
+      .min(2, 'Muito curto!')
+      .max(200, 'Muito grande!')
+      .required('genero obrigatório!')
 });
 
 const formik = useFormik({
@@ -86,7 +91,7 @@ const formik = useFormik({
         id: values.id,
         name: values.name,
         numberMembers: JSON.stringify(values.numbermembers),
-        contact: JSON.stringify(values.contact),
+        contact: values.contact+"",//
         email: values.email,
         logo: values.logo,
         bandPhoto: values.bandphoto,
@@ -209,6 +214,7 @@ const { errors, touched, handleSubmit, getFieldProps } = formik;
             <div>{touched.cache && errors.cache}</div>
           </div>
           
+          <div>
           <Select
             defaultValue={stateGender}
             components={animatedComponents}
@@ -223,7 +229,10 @@ const { errors, touched, handleSubmit, getFieldProps } = formik;
             isLoading={false}
             isRtl={false}
             closeMenuOnSelect={false}
+            
           />
+          <div>{touched.genre && errors.genre}</div>
+          </div>
 
           <button type='submit'  >Atualizar evento</button>
           <Link to="/">Volta para pagina inicial</Link>  

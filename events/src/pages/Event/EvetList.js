@@ -6,6 +6,7 @@ import "./style.css";
 function EvetList() {
 
     const [itens, setItens] = useState([]);
+    console.log(itens)
     const navigate = useNavigate();
     const [refreshPage, setRefreshPage] = useState('');
 
@@ -48,6 +49,7 @@ function EvetList() {
                         <td>instrumentos da banda</td>
                         <td>Publico alvo</td>
                         <td>ID</td>
+                        <td>Evento</td>
                         <td>Atualizar</td>
                         <td>Deletar</td>
                     </tr>
@@ -62,6 +64,7 @@ function EvetList() {
                             <td style={{ border: "1px solid" }}>{item.bandInstruments}</td>
                             <td style={{ border: "1px solid" }}>{item.expectedAudience}</td>
                             <td style={{ border: "1px solid" }}>{item._id}</td>
+                            <td style={{ border: "1px solid" }}>{item.band.map(io => io.name)}</td>
                             <td style={{ border: "1px solid" }}><button onClick={() => redirect(item)}>Atualizar</button> </td>
                             <td style={{ border: "1px solid" }}><button onClick={() => deleteEvent(item._id)}>Deletar</button> </td>
 

@@ -51,6 +51,7 @@ function BandList() {
                         <td>publico alvo</td>
                         <td>cache</td>
                         <td>ID</td>
+                        <td>Genero</td>
                         <td>Atualizar</td>
                         <td>Deletar</td>
                     </tr>
@@ -66,6 +67,7 @@ function BandList() {
                             <td style={{ border: "1px solid" }}>{item.targetAudience}</td>
                             <td style={{ border: "1px solid" }}>{item.cache}</td>
                             <td style={{ border: "1px solid" }}>{item._id}</td>
+                            <td style={{ border: "1px solid" }}>{item.genre.map(io => io.name)}</td>
                             <td style={{ border: "1px solid" }}><button onClick={() => redirect(item)}>Atualizar</button> </td>
                             <td style={{ border: "1px solid" }}><button onClick={() => deletarCategoria(item._id)}>Deletar</button> </td>
 
