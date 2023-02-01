@@ -94,13 +94,13 @@ const formik = useFormik({
     const body = { 
         id: values.id,
         name: values.name,
-        numberMembers: JSON.stringify(values.numbermembers),
-        contact: values.contact+"",//
+        numberMembers: values.numbermembers+"",
+        contact: values.contact+"",
         email: values.email,
         logo: values.logo,
         bandPhoto: values.bandphoto,
         targetAudience: values.targetaudience,
-        cache: JSON.stringify(values.cache),
+        cache: values.cache+"",
         genre: selectedGenre.map(id => ({_id:id.value}))
 
      }

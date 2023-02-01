@@ -29,7 +29,7 @@ function CreateBand() {
     fetchMyAPI();
   }, []);
 
-  //const ola = selectedGenre;
+
    useEffect(() => {
     formik.setFieldValue("genre", selectedGenre)
    }, [selectedGenre]);

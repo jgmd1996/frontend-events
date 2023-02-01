@@ -7,15 +7,15 @@ import makeAnimated from "react-select/animated";
 
 function UpdateEvent() {
   const navigate = useNavigate();
-  const {state} = useLocation();
+  const { state } = useLocation();
   const animatedComponents = makeAnimated();
 
- 
- 
+
+
   // selecionar e busca a banda
   const [band, setBand] = useState([]);//
   const [selectedBand, setSelectedBand] = useState({});//
-  const stateBand = state.item.band.map(band => ({value: band._id, label: band.name}));//
+  const stateBand = state.item.band.map(band => ({ value: band._id, label: band.name }));//
   useEffect(() => {//
     async function fetchMyAPI() {//
       let response = await fetch("http://localhost:3001/band");//
@@ -26,101 +26,112 @@ function UpdateEvent() {
     fetchMyAPI();
   }, []);
   //
-const RegisterSchema = Yup.object().shape({
-  name: Yup.string()
-  .min(2, 'Muito curto!')
-  .max(200, 'Muito grande!')
-  .required('name obrigatório!'),
 
-address: Yup.string()
-  .min(2, 'Muito curto!')
-  .max(200, 'Muito grande!')
-  .required('Endereço obrigatório!'),
+  useEffect(() => {
+    formik.setFieldValue("band", selectedBand)
+  }, [selectedBand]);
 
-presentationlocation: Yup.string()
-  .min(2, 'Muito curto!')
-  .max(200, 'Muito grande!')
-  .required('local de apresentação obrigatório!'),
 
-targetaudience: Yup.string()
-  .min(2, 'Muito curto!')
-  .max(200, 'Muito grande!')
-  .required('Publico alvo obrigatório!'),
+  const RegisterSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(2, 'Muito curto!')
+      .max(200, 'Muito grande!')
+      .required('name obrigatório!'),
 
-cache: Yup.string()
-  .min(2, 'Muito curto!')
-  .max(200, 'Muito grande!')
-  .required('Cache obrigatório!'),
+    address: Yup.string()
+      .min(2, 'Muito curto!')
+      .max(200, 'Muito grande!')
+      .required('Endereço obrigatório!'),
 
-bandinstruments: Yup.string()
-  .min(2, 'Muito curto!')
-  .max(200, 'Muito grande!')
-  .required('Informe se os intrumentos são da banda ou do evento!'),
+    presentationlocation: Yup.string()
+      .min(2, 'Muito curto!')
+      .max(200, 'Muito grande!')
+      .required('local de apresentação obrigatório!'),
 
-  expectedaudience: Yup.string()
-  .min(2, 'Muito curto!')
-  .max(200, 'Muito grande!')
-  .required('Publico esperado obrigatório!')
-});
+    targetaudience: Yup.string()
+      .min(2, 'Muito curto!')
+      .max(200, 'Muito grande!')
+      .required('Publico alvo obrigatório!'),
 
-const formik = useFormik({
-  initialValues: {
-    id: state.item._id,
-    name: state.item.name,
-    address: state.item.address,
-    presentationlocation: state.item.presentationLocation,
-    targetaudience: state.item.targetAudience,
-    cache: state.item.cache,
-    bandinstruments: state.item.bandInstruments,
-    expectedaudience: state.item.expectedAudience,
-    band: state.item.band.map(bandApi => ({ value: bandApi._id, label: bandApi.name })),
-  },
-  validationSchema: RegisterSchema,
+    cache: Yup.number()
+      .min(2, 'Muito curto!')
+      .max(200, 'Muito grande!')
+      .required('Cache obrigatório!'),
 
-  onSubmit: async (values) => {
-    const body = { 
-      id: values.id,
-      name: values.name,
-      address: values.address,
-      presentationLocation: values.presentationlocation,
-      targetAudience: values.targetaudience,
-      cache: JSON.stringify(values.cache),
-      bandInstruments: values.bandinstruments,
-      expectedAudience: JSON.stringify(values.expectedaudience),
-      band: selectedBand.map(id => ({_id:id.value}))
-     }
-     console.log("body",body)
-    const settings = {
-      method: 'put',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: JSON.stringify(body)
-    };
-    try {
-      const fetchResponse = await fetch('http://localhost:3001/event/',settings);  
-      console.log("fetchResponse",fetchResponse);
-      if (fetchResponse.status === 200) {
-        formik.setFieldValue("name", null);
-        navigate('/EvetList', { replace: true });
+    bandinstruments: Yup.string()
+      .min(2, 'Muito curto!')
+      .max(200, 'Muito grande!')
+      .required('Informe se os intrumentos são da banda ou do evento!'),
+
+    expectedaudience: Yup.number()
+      .min(2, 'Muito curto!')
+      .max(200, 'Muito grande!')
+      .required('Publico esperado obrigatório!'),
+
+    band: Yup.array()
+      .nullable(true)
+      .min(1, 'Muito curto!')
+      .required('Banda obrigatório!')
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      id: state.item._id,
+      name: state.item.name,
+      address: state.item.address,
+      presentationlocation: state.item.presentationLocation,
+      targetaudience: state.item.targetAudience,
+      cache: state.item.cache,
+      bandinstruments: state.item.bandInstruments,
+      expectedaudience: state.item.expectedAudience,
+      band: state.item.band.map(bandApi => ({ value: bandApi._id, label: bandApi.name })),
+    },
+    validationSchema: RegisterSchema,
+
+    onSubmit: async (values) => {
+      const body = {
+        id: values.id,
+        name: values.name,
+        address: values.address,
+        presentationLocation: values.presentationlocation,
+        targetAudience: values.targetaudience,
+        cache: values.cache + "",
+        bandInstruments: values.bandinstruments,
+        expectedAudience: values.expectedaudience + "",
+        band: selectedBand.map(id => ({ _id: id.value }))
       }
-    } catch (e) {
-      console.error(e);
+      console.log("body", body)
+      const settings = {
+        method: 'put',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(body)
+      };
+      try {
+        const fetchResponse = await fetch('http://localhost:3001/event/', settings);
+        console.log("fetchResponse", fetchResponse);
+        if (fetchResponse.status === 200) {
+          formik.setFieldValue("name", null);
+          navigate('/EvetList', { replace: true });
+        }
+      } catch (e) {
+        console.error(e);
+      }
+      console.log("body", body)
     }
-    console.log("body",body)
-  }
-});
+  });
 
-const { errors, touched, handleSubmit, getFieldProps } = formik;
+  const { errors, touched, handleSubmit, getFieldProps } = formik;
 
   return (
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
 
-        <h1>Atuallizar evento</h1>
-        <div>
+          <h1>Atuallizar evento</h1>
+          <div>
             <input
               type="text"
               id="name"
@@ -162,7 +173,7 @@ const { errors, touched, handleSubmit, getFieldProps } = formik;
 
           <div>
             <input
-              type="text"
+              type="number"
               id="cache"
               placeholder="Digite o cache do evento"
               {...getFieldProps('cache')}
@@ -182,7 +193,7 @@ const { errors, touched, handleSubmit, getFieldProps } = formik;
 
           <div>
             <input
-              type="text"
+              type="number"
               id="expectedaudience"
               placeholder="Digite a espectativa de audiencia do evento"
               {...getFieldProps('expectedaudience')}
@@ -190,24 +201,26 @@ const { errors, touched, handleSubmit, getFieldProps } = formik;
             <div>{touched.expectedaudience && errors.expectedaudience}</div>
           </div>
 
-          <Select
-          defaultValue={stateBand}
-            components={animatedComponents}
-            placeholder="Selecione a banda"
-            isMulti
-            options={band}
-            onChange={(item) => setSelectedBand(item)}
-            className="select"
-            isClearable={true}
-            isSearchable={true}
-            isDisabled={false}
-            isLoading={false}
-            isRtl={false}
-            closeMenuOnSelect={false}
-          />
-
+          <div>
+            <Select
+              defaultValue={stateBand}
+              components={animatedComponents}
+              placeholder="Selecione a banda"
+              isMulti
+              options={band}
+              onChange={(item) => setSelectedBand(item)}
+              className="select"
+              isClearable={true}
+              isSearchable={true}
+              isDisabled={false}
+              isLoading={false}
+              isRtl={false}
+              closeMenuOnSelect={false}
+            />
+            <div>{touched.band && errors.band}</div>
+          </div>
           <button type='submit'  >Atualizar evento</button>
-          <Link to="/">Volta para pagina inicial</Link>  
+          <Link to="/">Volta para pagina inicial</Link>
         </Form>
       </FormikProvider>
     </>

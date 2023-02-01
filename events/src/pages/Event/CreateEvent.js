@@ -11,7 +11,7 @@ function CreateEvent() {
 
   const animatedComponents = makeAnimated();
   const navigate = useNavigate();
-  
+
   // selecionar e busca a banda
   const [band, setBand] = useState([]);
   const [selectedBand, setSelectedBand] = useState({});
@@ -24,7 +24,10 @@ function CreateEvent() {
     }
     fetchMyAPI();
   }, []);
-  
+
+  useEffect(() => {
+    formik.setFieldValue("band", selectedBand)
+  }, [selectedBand]);
 
   const RegisterSchema = Yup.object().shape({
     name: Yup.string()
@@ -57,10 +60,15 @@ function CreateEvent() {
       .max(200, 'Muito grande!')
       .required('Informe se os intrumentos são da banda ou do evento!'),
 
-      expectedaudience: Yup.number()
+    expectedaudience: Yup.number()
       .min(2, 'Muito curto!')
       .max(200, 'Muito grande!')
-      .required('Publico esperado obrigatório!')
+      .required('Publico esperado obrigatório!'),
+
+    band: Yup.array()
+      .nullable(true)
+      .min(1, 'Muito curto!')
+      .required('Banda obrigatório!')
   });
 
   const formik = useFormik({
@@ -83,12 +91,12 @@ function CreateEvent() {
         address: values.address,
         presentationLocation: values.presentationlocation,
         targetAudience: values.targetaudience,
-        cache: values.cache,
+        cache: values.cache+"",
         bandInstruments: values.bandinstruments,
-        expectedAudience: values.expectedaudience,
-        band: selectedBand.map(id => ({_id: id.value}))
+        expectedAudience: values.expectedaudience+"",
+        band: selectedBand.map(id => ({ _id: id.value }))
       };
-      console.log("body",body)
+      console.log("body", body)
       const settings = {
         method: 'POST',
         headers: {
@@ -98,24 +106,24 @@ function CreateEvent() {
         body: JSON.stringify(body)
 
       };
-      console.log("body",body)
+      console.log("body", body)
       try {
-        console.log("body",body)
+        console.log("body", body)
         const fetchResponse = await fetch('http://localhost:3001/event', settings);
         console.log("fetchResponse", fetchResponse);
-        console.log("body",body)
+        console.log("body", body)
         if (fetchResponse.status === 201) {
           formik.setFieldValue("name", null);
           navigate('/EvetList', { replace: true });
         }
       } catch (e) {
-        console.log("body",body)
+        console.log("body", body)
         console.error(e);
       }
-      console.log("body",body)
+      console.log("body", body)
     }
   });
-  
+
   const { errors, touched, handleSubmit, getFieldProps } = formik;
 
   return (
@@ -166,7 +174,7 @@ function CreateEvent() {
 
           <div>
             <input
-              type="text"
+              type="number"
               id="cache"
               placeholder="Digite o cache do evento"
               {...getFieldProps('cache')}
@@ -186,7 +194,7 @@ function CreateEvent() {
 
           <div>
             <input
-              type="text"
+              type="number"
               id="expectedaudience"
               placeholder="Digite a espectativa de audiencia do evento"
               {...getFieldProps('expectedaudience')}
@@ -194,22 +202,24 @@ function CreateEvent() {
             <div>{touched.expectedaudience && errors.expectedaudience}</div>
           </div>
 
-          
 
-          <Select
-            components={animatedComponents}
-            placeholder="Selecione a banda"
-            isMulti
-            options={band}
-            onChange={(item) => setSelectedBand(item)}
-            className="select"
-            isClearable={true}
-            isSearchable={true}
-            isDisabled={false}
-            isLoading={false}
-            isRtl={false}
-            closeMenuOnSelect={false}
-          />
+          <div>
+            <Select
+              components={animatedComponents}
+              placeholder="Selecione a banda"
+              isMulti
+              options={band}
+              onChange={(item) => setSelectedBand(item)}
+              className="select"
+              isClearable={true}
+              isSearchable={true}
+              isDisabled={false}
+              isLoading={false}
+              isRtl={false}
+              closeMenuOnSelect={false}
+            />
+            <div>{touched.band && errors.band}</div>
+          </div>
 
           <div>{touched.category && errors.category}</div>
           <button type='submit'  >Criar produtos</button>
