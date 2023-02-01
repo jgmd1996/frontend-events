@@ -13,7 +13,8 @@ function CreateBand() {
 
   // selecionar e busca genre
   const [selectedGenre, setSelectedGenre] = useState({});
-  console.log("selectedGenre",selectedGenre);
+ 
+  //console.log("selectedGenre",selectedGenre);
 
   const [genres, setGenres] = useState([]);
   //console.log("genres",genres);
@@ -27,19 +28,12 @@ function CreateBand() {
 
     fetchMyAPI();
   }, []);
-  
-  // // selecionar e busca a banda
-  // const [event, setEvent] = useState([]);
-  // const [selectedEvent, setSelectedEvent] = useState({});
-  // useEffect(() => {
-  //   async function fetchMyAPI() {
-  //     let response = await fetch("http://localhost:3001/event");
-  //     const genresApi = await response.json();
-  //     const eventsSelect = genresApi.map(genreApi => ({ value: genreApi._id, label: genreApi.name }));
-  //     setEvent(eventsSelect);
-  //   }
-  //   fetchMyAPI();
-  // }, []);
+
+  //const ola = selectedGenre;
+   useEffect(() => {
+    formik.setFieldValue("genre", selectedGenre)
+   }, [selectedGenre]);
+
 
   const RegisterSchema = Yup.object().shape({
     name: Yup.string()
@@ -47,13 +41,13 @@ function CreateBand() {
       .max(200, 'Muito grande!')
       .required('name obrigatório!'),
 
-    numbermembers: Yup.string()
+    numbermembers: Yup.number()
       .min(1, 'Muito curto!')
       .max(500, 'Muito grande!')
       .required('Numero de integrantes obrigatório!'),
 
-      contact: Yup.string()
-      .min(11, 'Muito curto!')
+      contact: Yup.number()
+      .min(10, 'Muito curto!')
       .max(99999999999, 'Muito grande!')
       .required('Contato obrigatório!'),
 
@@ -77,12 +71,14 @@ function CreateBand() {
       .max(200, 'Muito grande!')
       .required('Publico alvo obrigatório!'),
 
-      cache: Yup.string()
+      cache: Yup.number()
       .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
+      .max(1000000, 'Muito grande!')
       .required('Cache obrigatório!'),
 
-      genre: Yup.string()
+      genre: Yup.array()
+      .nullable(true)
+      .min(1, 'Muito curto!')
       .required('genero obrigatório!')
   });
 
@@ -96,7 +92,7 @@ function CreateBand() {
       bandphoto: '',
       targetaudience: '',
       cache:'',
-      genre:''
+      genre: ''
     },
 
     validationSchema: RegisterSchema,
@@ -113,6 +109,7 @@ function CreateBand() {
         cache: values.cache,
         genre: selectedGenre.map(id => ({ _id: id.value}))
       };
+      console.log("body",body)
       const settings = {
         method: 'POST',
         headers: {
@@ -226,6 +223,7 @@ function CreateBand() {
 
         <div>
           <Select
+         
             components={animatedComponents}
             placeholder="Selecione o genero"
             isMulti
@@ -240,7 +238,6 @@ function CreateBand() {
             isRtl={false}
             closeMenuOnSelect={false}
           />
-       
           <div>{touched.genre && errors.genre}</div>
           </div>
 

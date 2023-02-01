@@ -23,20 +23,24 @@ function UpdateBand() {
     }
     fetchMyAPI();
   }, []);
+
+  useEffect(() => {
+    formik.setFieldValue("genre", selectedGenre)
+   }, [selectedGenre]);
   
-const RegisterSchema = Yup.object().shape({
-  name: Yup.string()
+  const RegisterSchema = Yup.object().shape({
+    name: Yup.string()
       .min(2, 'Muito curto!')
       .max(200, 'Muito grande!')
       .required('name obrigatório!'),
 
-    numbermembers: Yup.string()
+    numbermembers: Yup.number()
       .min(1, 'Muito curto!')
       .max(500, 'Muito grande!')
       .required('Numero de integrantes obrigatório!'),
 
-      contact: Yup.string()
-      .min(11, 'Muito curto!')
+      contact: Yup.number()
+      .min(10, 'Muito curto!')
       .max(99999999999, 'Muito grande!')
       .required('Contato obrigatório!'),
 
@@ -60,16 +64,16 @@ const RegisterSchema = Yup.object().shape({
       .max(200, 'Muito grande!')
       .required('Publico alvo obrigatório!'),
 
-      cache: Yup.string()
+      cache: Yup.number()
       .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
+      .max(1000000, 'Muito grande!')
       .required('Cache obrigatório!'),
 
-      genre: Yup.string()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
+      genre: Yup.array()
+      .nullable(true)
+      .min(1, 'Muito curto!')
       .required('genero obrigatório!')
-});
+  });
 
 const formik = useFormik({
   initialValues: {
