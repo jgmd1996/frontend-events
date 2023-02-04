@@ -10,27 +10,22 @@ function UpdateEvent() {
   const { state } = useLocation();
   const animatedComponents = makeAnimated();
 
-
-
-  // selecionar e busca a banda
-  const [band, setBand] = useState([]);//
-  const [selectedBand, setSelectedBand] = useState({});//
-  const stateBand = state.item.band.map(band => ({ value: band._id, label: band.name }));//
-  useEffect(() => {//
-    async function fetchMyAPI() {//
-      let response = await fetch("http://localhost:3001/band");//
+  const [band, setBand] = useState([]);
+  const stateBand = state.item.band.map(band => ({ value: band._id, label: band.name }));
+  const [selectedBand, setSelectedBand] = useState(stateBand);
+  useEffect(() => {
+    async function fetchMyAPI() {
+      let response = await fetch("http://localhost:3001/band");
       const body = await response.json();
       const genresSelect = body.bands.map(bandApi => ({ value: bandApi._id, label: bandApi.name }));
       setBand(genresSelect);
     }
     fetchMyAPI();
   }, []);
-  //
 
   useEffect(() => {
     formik.setFieldValue("band", selectedBand)
   }, [selectedBand]);
-
 
   const RegisterSchema = Yup.object().shape({
     name: Yup.string()
@@ -87,7 +82,7 @@ function UpdateEvent() {
       band: state.item.band.map(bandApi => ({ value: bandApi._id, label: bandApi.name })),
     },
     validationSchema: RegisterSchema,
-
+    
     onSubmit: async (values) => {
       const body = {
         id: values.id,
@@ -101,6 +96,7 @@ function UpdateEvent() {
         band: selectedBand.map(id => ({ _id: id.value }))
       }
       console.log("body", body)
+      console.log("formik", formik)
       const settings = {
         method: 'put',
         headers: {

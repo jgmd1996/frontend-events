@@ -12,8 +12,9 @@ function UpdateBand() {
   const animatedComponents = makeAnimated();
 
   const [genres, setGenres] = useState([]);
-  const [selectedGenre, setSelectedGenre] = useState({});
   const stateGender = state.item.genre.map(genreh => ({value: genreh._id, label: genreh.name}));
+  const [selectedGenre, setSelectedGenre] = useState(stateGender);
+ 
   useEffect(() => {
     async function fetchMyAPI() {
       let response = await fetch("http://localhost:3001/genre");

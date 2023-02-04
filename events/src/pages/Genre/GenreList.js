@@ -1,6 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import RedirectPages from '../../components/RedirectPages';
 
 function GenreList() {
     
@@ -59,7 +60,7 @@ function GenreList() {
                     }
                 </tbody>
             </table>
-            <Link to="/">Voltar para pagina inicial</Link>
+            <RedirectPages linkPage="/" page="Voltar para Home"/>
         </div>
     );
 }

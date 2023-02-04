@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import RedirectPages from '../components/RedirectPages';
 
 function Home() {
   return (
@@ -8,21 +8,21 @@ function Home() {
           <tbody>
 
             <tr>
-              <td>Generos</td>
-              <td>Evento</td>
-              <td>Banda</td>
+              <td><RedirectPages NamePage="Generos"/></td>
+              <td><RedirectPages NamePage="Evento"/></td>
+              <td><RedirectPages NamePage="Banda"/></td>
+            </tr>
+
+            <tr align="center">
+             <td><RedirectPages linkPage="createGenre" page="Criar novo genero"/></td>
+             <td><RedirectPages linkPage="CreateEvent" page="Criar novo evento"/></td>
+             <td><RedirectPages linkPage="CreateBand" page="Criar nova Banda"/></td>
             </tr>
 
             <tr>
-              <td><Link to="/createGenre">Criar Genero</Link></td>
-              <td><Link to="/CreateEvent">Criar novo evento</Link></td>
-              <td><Link to="/CreateBand">Registrar banda</Link></td>
-            </tr>
-
-            <tr>
-              <td><Link to="/genreList">Lista Genero</Link></td>
-              <td><Link to="/EvetList">Lista evento</Link></td>
-              <td><Link to="/BandList">Lista bandas</Link></td>
+            <td><RedirectPages linkPage="genreList" page="Listar Generos"/></td>
+            <td><RedirectPages linkPage="EvetList" page="Listar Eventos"/></td>
+            <td><RedirectPages linkPage="BandList" page="Listar Bandas"/></td>
             </tr>
 
           </tbody>

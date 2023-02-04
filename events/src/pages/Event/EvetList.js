@@ -1,6 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import RedirectPages from '../../components/RedirectPages';
 import "./style.css";
 
 function EvetList() {
@@ -72,7 +73,7 @@ function EvetList() {
                     })}
                 </tbody>
             </table>
-            <Link to="/">home</Link>
+            <RedirectPages linkPage="/" page="Voltar para Home"/>
         </div>
 
 
