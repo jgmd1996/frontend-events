@@ -1,10 +1,11 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import * as Yup from "yup";
 import React from 'react';
 import { useEffect, useState } from 'react'
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import RedirectPages from '../../components/RedirectPages';
 import "./style.css";
 
 function CreateEvent() {
@@ -223,7 +224,7 @@ function CreateEvent() {
 
           <div>{touched.category && errors.category}</div>
           <button type='submit'  >Criar produtos</button>
-          <Link to="/">home</Link>
+          <RedirectPages linkPage="/" page="Voltar para Home"/>
         </Form>
       </FormikProvider>
     </>

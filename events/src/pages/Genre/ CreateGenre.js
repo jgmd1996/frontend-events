@@ -1,5 +1,6 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
+import RedirectPages from '../../components/RedirectPages';
 import * as Yup from "yup";
 
 function  CreateGenre() {
@@ -48,7 +49,7 @@ function  CreateGenre() {
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
-
+       
           <div>
             <input
               type="text"
@@ -61,7 +62,7 @@ function  CreateGenre() {
 
           <button type='submit'>Criar Genero</button>
           
-          <Link to="/">Voltar para pagina inicial</Link>
+          <RedirectPages linkPage="/" page="Voltar para Home"/>
         </Form>
       </FormikProvider>
     </>
